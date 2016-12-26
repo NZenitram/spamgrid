@@ -6,6 +6,7 @@
   margin-top: 8px;
   color: #000000;
   letter-spacing: .5px;
+  font-family: 'Orbitron', serif;
 }
 
 #left-side {
@@ -26,6 +27,10 @@
   width: 3%;
 }
 
+#account {
+  font-family: 'Orbitron', serif;
+}
+
 .navbar {
   background-color: dodgerblue !important;
   padding-top: 5px;
@@ -35,14 +40,17 @@
 .navbar-brand {
   float: left;
   height: 50px;
-  padding: 15px 15px;
-  font-size: 18px;
-  line-height: 20px;
+  padding: 5px 5px;
+  font-size: 46px;
+  color: black;
 }
 .navbar-brand:hover,
 .navbar-brand:focus {
   text-decoration: none;
 }
-.navbar-brand > img {
-  display: block;
-}
+
+.navbar-brand {
+        font-family: 'Orbitron', serif;
+        font-size: 72px;
+        text-shadow: 4px 4px 4px #aaa;
+      }
