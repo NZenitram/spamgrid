@@ -7,9 +7,11 @@ class User < ApplicationRecord
       user.provider         = auth.provider
       user.uid              = user.uid
       user.name             = auth.info.name
+      user.email_address    = auth.info.email
       user.oauth_token      = auth.credentials.token
       user.oauth_expires_at = Time.at(auth.credentials.expires_at)
       user.save!
+      UserNotifierMailer.send_signup_email(user).deliver
     end
   end
 end
