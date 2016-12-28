@@ -1,5 +1,8 @@
 require "rails_helper"
 
 RSpec.describe UserNotifierMailer, type: :mailer do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context "welcome email is sent" do
+    it "sends an email" do
+    end
+  end
 end
