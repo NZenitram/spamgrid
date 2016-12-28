@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'auth/failure', to: redirect('/')
   get 'signout', to: 'sessions#destroy', as: 'signout'
   get 'spam', to: 'home#spam', as: 'send_spam'
+  get 'apikey', to: 'home#sign_up', as: 'sign_up'
 
   resources :sessions, only: [:create, :destroy]
   resources :home, only: [:show]

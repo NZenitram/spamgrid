@@ -5,6 +5,6 @@ class HomeController < ApplicationController
     redirect_to root_path
   end
 
-  def show
+  def sign_up
   end
 end

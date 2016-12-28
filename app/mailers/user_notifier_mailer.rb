@@ -1,7 +1,7 @@
 class UserNotifierMailer < ApplicationMailer
   default :from => 'spamgrid@example.com'
 
-  test_array = ["a@sink.sendgrid.net","b@sink.sendgrid.net", "c@sink.sendgrid.net"]
+  array = ["a@sink.sendgrid.net","b@sink.sendgrid.net", "c@sink.sendgrid.net"]
 
   def send_signup_email(user)
     @user = user
@@ -10,7 +10,7 @@ class UserNotifierMailer < ApplicationMailer
   end
 
   def test_spam
-    mail( to: ["a@sink.sendgrid.net","b@sink.sendgrid.net", "c@sink.sendgrid.net"],
+    mail( to: array,
           :subject => 'Thanks for signing up!')
   end
 end
