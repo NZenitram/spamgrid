@@ -1,6 +1,6 @@
 #### SpamGrid
 
-``
+```
 Through this app we will be able to send spam email through the SendGrid email platform using AWS instances and a Chef script that deploys and brings down servers as needed/banned.
 ``
 
