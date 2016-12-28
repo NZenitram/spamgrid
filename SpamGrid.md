@@ -20,7 +20,7 @@ I plan on using the SendGrid API, Chef Open Source and Google OAuth as a part of
 
 ### Iteration One
 
-Wireframe website design with a user dashboard and CRUD out basic user login with Google OAuth.
+Wireframe website design with a user dashboard and CRUD out basic user login with Google OAuth. Build out the ruby mailer and integrate with the SendGrid API to send email from my localhost. 
 
 ### Iteration Two
 
