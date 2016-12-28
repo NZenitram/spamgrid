@@ -19,7 +19,7 @@ class SessionsController < ApplicationController
   end
 
   private
-  attr_reader :user_credentials
+    attr_reader :user_credentials
 
   def user_credentials
     env["omniauth.auth"]
