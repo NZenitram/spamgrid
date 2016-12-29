@@ -19,6 +19,7 @@ class UploadsController < ApplicationController
       @upload = Upload.new(
           url: obj.public_url,
           name: obj.key,
+          user_id: session[:user_id]
       )
 
       if @upload.save
