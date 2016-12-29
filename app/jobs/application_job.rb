@@ -2,7 +2,8 @@ require 'csv'
 class ApplicationJob < ActiveJob::Base
 
   def create_csv
-    CSV.open("tmp/mailing_list.csv", "wb") do |csv|
+    file = Faker::Hipster.word
+    CSV.open("tmp/#{file}.csv", "wb") do |csv|
       csv << ["name", "email"]
       10.times do |n|
         csv << [Faker::Name.name, "#{n}@sink.sendgrid.net"]

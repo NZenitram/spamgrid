@@ -1,25 +1,24 @@
 <div class="mainbox col-md-6">
   <div class="panel panel-info">
-
     <div class="panel-heading">
-      <div class="panel-title", id="account" >Create Account</div>
+      <div class="panel-title", id="account" >Select Your File</div>
     </div>
-
     <div class="panel-body new-user" id="create-user">
-      <%= form_tag "/spam" do  %>
-        <div class="form-group">
-          <%= label_tag :file_name, "File Name", class: "control-label col-md-4 required-field" %>
-          <%= text_field_tag :file_name, "", class: "input-md textinput textInput form-control" %>
+      <h4> Your files must be uploaded in CSV format. </h4>
+        <div class="form-group col-md-4">
+          <%= form_tag "/spam" do  %>
+            <%= select_tag(:file_name, options_for_select(@uploads.map{|upload| [upload.name]})) %>
+
+            <%= submit_tag "Send Spam", class: "btn btn-primary" %>
+          <% end %>
         </div>
         <div class="form-group">
-          <%= submit_tag "Send Spam", class: "btn btn-primary"%>
+          <%= form_tag uploads_path, enctype: 'multipart/form-data', class: 'float-right' do %>
+            <%= file_field_tag :file, class: 'upload-file-button btn btn-primary float-right' %>
+            <%= submit_tag 'Upload file >>', class: 'upload-file-link btn btn-primary float-right' %>
+          <% end %>
         </div>
-      <% end %>
     </div>
   </div>
 </div>
-  <%= form_tag uploads_path, enctype: 'multipart/form-data', class: 'float-right' do %>
-    <%= file_field_tag :file, class: 'upload-file-button btn btn-primary float-right' %>
-    <%= submit_tag 'Upload file >>', class: 'upload-file-link btn btn-primary float-right' %>
-  <% end %>
   <%= link_to "Get Key", sign_up_path, class: "btn btn-primary" %>

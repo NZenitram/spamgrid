@@ -1,5 +1,9 @@
 class HomeController < ApplicationController
 
+  def show
+    @uploads = current_user.uploads
+  end
+
   def spam
     file_name = params[:file_name]
     SpamMailer.test_multi_send(file_name).deliver_now
