@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :sessions, only: [:create, :destroy]
   resources :home, only: [:show]
+  resources :uploads, only: [:index, :show, :create]
 
   root to: 'home#show'
 end

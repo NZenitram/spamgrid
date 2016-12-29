@@ -18,5 +18,8 @@
     </div>
   </div>
 </div>
-<%= link_to "Send Spam", send_spam_path, class: "btn btn-primary" %>
-<%= link_to "Get Key", sign_up_path, class: "btn btn-primary" %>
+  <%= form_tag uploads_path, enctype: 'multipart/form-data', class: 'float-right' do %>
+    <%= file_field_tag :file, class: 'upload-file-button btn btn-primary float-right' %>
+    <%= submit_tag 'Upload file >>', class: 'upload-file-link btn btn-primary float-right' %>
+  <% end %>
+  <%= link_to "Get Key", sign_up_path, class: "btn btn-primary" %>
