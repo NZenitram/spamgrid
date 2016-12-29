@@ -1,10 +1,13 @@
 class HomeController < ApplicationController
 
   def spam
-    UserNotifierMailer.test_spam.deliver
+    file_name = params[:file_name]
+    SpamMailer.test_multi_send(file_name).deliver_now
     redirect_to root_path
   end
 
   def sign_up
+    HomeHelper.scrape_keys
+    redirect_to root_path
   end
 end
