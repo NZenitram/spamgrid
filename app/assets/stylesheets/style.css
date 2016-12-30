@@ -53,4 +53,12 @@
         font-family: 'Orbitron', serif;
         font-size: 72px;
         text-shadow: 4px 4px 4px #aaa;
-      }
+}
+
+#upload-file-link {
+        padding-top: 15px;
+  }
+
+#send-spam-link {
+        padding-top: 27px;
+}

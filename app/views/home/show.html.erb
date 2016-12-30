@@ -8,14 +8,17 @@
         <div class="form-group col-md-4">
           <%= form_tag "/spam" do  %>
             <%= select_tag(:file_name, options_for_select(@uploads.map{|upload| [upload.name]})) %>
-
-            <%= submit_tag "Send Spam", class: "btn btn-primary" %>
+            <div id="send-spam-link">
+              <%= submit_tag "Send Spam", class: "btn btn-primary" %>
+            </div>
           <% end %>
         </div>
         <div class="form-group">
           <%= form_tag uploads_path, enctype: 'multipart/form-data', class: 'float-right' do %>
             <%= file_field_tag :file, class: 'upload-file-button btn btn-primary float-right' %>
-            <%= submit_tag 'Upload file >>', class: 'upload-file-link btn btn-primary float-right' %>
+            <div id="upload-file-link">
+              <%= submit_tag 'Upload file >>', class: 'upload-file-link btn btn-primary float-right' %>
+            </div>
           <% end %>
         </div>
     </div>
