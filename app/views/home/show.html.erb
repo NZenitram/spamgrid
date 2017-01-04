@@ -6,12 +6,12 @@
     <div class="panel-body new-user" id="create-user">
       <h4> Your files must be uploaded in CSV format. </h4>
         <div class="form-group col-md-4">
-          <%= form_tag "/spam" do  %>
-            <%= select_tag(:file_name, options_for_select(@uploads.map{|upload| [upload.name]})) %>
-            <div id="send-spam-link">
-              <%= submit_tag "Send Spam", class: "btn btn-primary" %>
-            </div>
-          <% end %>
+            <%= form_tag "/spam" do  %>
+              <%= collection_select(:upload, :name, Upload.all, :url, :name) %>
+                <div id="send-spam-link">
+                <%= submit_tag "Send Spam", class: "btn btn-primary" %>
+              </div>
+            <% end %>
         </div>
         <div class="form-group">
           <%= form_tag uploads_path, enctype: 'multipart/form-data', class: 'float-right' do %>
@@ -22,6 +22,16 @@
           <% end %>
         </div>
     </div>
+  </div>
+</div>
+<div class="mainbox col-md-6">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <div class="panel-title", id="account" >File Preview</div>
+      </div>
+        <div class="panel-body new-user" id="create-user">
+            <div id="files"></div>
+        </div>
   </div>
 </div>
   <%= link_to "Get Key", sign_up_path, class: "btn btn-primary" %>
