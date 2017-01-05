@@ -5,7 +5,8 @@ class HomeController < ApplicationController
   end
 
   def spam
-    file_name = params[:file_name]
+    file_name = params[:upload][:name]
+    binding.pry
     SpamMailer.test_multi_send(file_name).deliver_now
     redirect_to root_path
   end
