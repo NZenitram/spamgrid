@@ -11,8 +11,7 @@ context 'a logged in user can' do
       visit '/'
 
       click_button "Upload file >>"
-      save_and_open_page
-      
+
       expect(page).to have_content(upload.name)
     end
 end
