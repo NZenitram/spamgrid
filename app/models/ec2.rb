@@ -63,7 +63,7 @@ class Ec2 < ApplicationRecord
     ssh.loop
   end
 
-  # Add u
+  # Add user to rvm environment; install bundler, install nodejs
   Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
     ssh.exec "sudo usermod -a -G rvm ubuntu"
     ssh.exec "gem install bundler --no-rdoc --no-ri"
@@ -72,18 +72,29 @@ class Ec2 < ApplicationRecord
     ssh.loop
   end
 
+  # install nginx and passenger services for ubuntu xenial
   Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
     ssh.exec "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7"
     ssh.exec "sudo apt-get install -y apt-transport-https ca-certificates"
     ssh.exec "sudo sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger xenial main > /etc/apt/sources.list.d/passenger.list'"
+    ssh.exec "sudo apt-get update"
+    ssh.loop
+  end
+
+
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
+    ssh.exec "sudo apt-get install -y nginx-extras passenger"
+    ssh.exec "sudo sed -i '/passenger.conf/s/#//g' /etc/nginx/nginx.conf"
+    ssh.exec "sudo service nginx restart"
     ssh.loop
   end
 
   Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
-    ssh.exec "sudo apt-get update"
-    ssh.exec "sudo apt-get install -y nginx-extras passenger"
     ssh.exec "sudo sed -i '/passenger.conf/s/#//g' /etc/nginx/nginx.conf"
     ssh.exec "sudo service nginx restart"
+    ssh.exec "sudo apt-get update"
+    ssh.exec "sudo apt-get upgrade"
+    ssh.loop
   end
 
   puts "ssh -i #{private_key_file} #{ssh_username}@#{instance.public_dns_name}"
