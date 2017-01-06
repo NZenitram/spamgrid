@@ -48,16 +48,45 @@ class Ec2 < ApplicationRecord
   puts "ssh -i #{private_key_file} #{ssh_username}@#{instance.public_dns_name}"
   puts "Remember to terminate after you are done!"
 
-  sleep 15
+  sleep 60
 
-   Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
-    output = ssh.exec "sudo apt-get update && sudo apt-get -y upgrade"
-    ssh.exec "gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3"
-    ssh.exec "curl -sSL https://get.rvm.io | sudo bash -s stable"
-    ssh.exec "sudo usermod -a -G rvm `ubuntu`"
+  # Updates apt-get files on the Ubuntu instance
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
+    ssh.exec "sudo apt-get update && sudo apt-get -y upgrade"
     ssh.loop
   end
 
+  # Install rvm and rails environments
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
+    ssh.exec "sudo gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3"
+    ssh.exec "sudo curl -sSL https://get.rvm.io | sudo bash -s stable --rails"
+    ssh.loop
+  end
+
+  # Add u
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
+    ssh.exec "sudo usermod -a -G rvm ubuntu"
+    ssh.exec "gem install bundler --no-rdoc --no-ri"
+    ssh.exec "sudo apt-get install -y nodejs"
+    ssh.exec "sudo ln -sf /usr/bin/nodejs /usr/local/bin/node"
+    ssh.loop
+  end
+
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
+    ssh.exec "sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 561F9B9CAC40B2F7"
+    ssh.exec "sudo apt-get install -y apt-transport-https ca-certificates"
+    ssh.exec "sudo sh -c 'echo deb https://oss-binaries.phusionpassenger.com/apt/passenger xenial main > /etc/apt/sources.list.d/passenger.list'"
+    ssh.loop
+  end
+
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
+    ssh.exec "sudo apt-get update"
+    ssh.exec "sudo apt-get install -y nginx-extras passenger"
+    ssh.exec "sudo sed -i '/passenger.conf/s/#//g' /etc/nginx/nginx.conf"
+    ssh.exec "sudo service nginx restart"
+  end
+
+  puts "ssh -i #{private_key_file} #{ssh_username}@#{instance.public_dns_name}"
   # Don't forget to shut down the server with:
 
   # instance.delete
