@@ -133,11 +133,17 @@ class Ec2 < ApplicationRecord
 
   Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file) do |ssh|
     ssh.exec "sudo apt-get install -y postgresql"
+    ssh.exec "sudo -u postgres createuser --superuser ubuntu"
     ssh.loop
   end
 
   Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file) do |ssh|
     ssh.exec "cd /var/www/myapp/spamgrid && sudo bundle install --deployment --without development test"
+    ssh.loop
+  end
+
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file) do |ssh|
+    ssh.exec "cd /var/www/myapp/spamgrid && bundle exec rake assets:precompile"
     ssh.loop
   end
 
