@@ -48,7 +48,7 @@ class Ec2 < ApplicationRecord
   puts "ssh -i #{private_key_file} #{ssh_username}@#{instance.public_dns_name}"
   puts "Remember to terminate after you are done!"
 
-  sleep 60
+  sleep 40
 
   # Updates apt-get files on the Ubuntu instance
   Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
@@ -81,7 +81,7 @@ class Ec2 < ApplicationRecord
     ssh.loop
   end
 
-
+  # install niginx passenger and prepend nginx.conf to include the passenger service; restart nginx
   Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
     ssh.exec "sudo apt-get install -y nginx-extras passenger"
     ssh.exec "sudo sed -i '/passenger.conf/s/#//g' /etc/nginx/nginx.conf"
@@ -89,11 +89,61 @@ class Ec2 < ApplicationRecord
     ssh.loop
   end
 
+  # update and upgrade install services
   Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
-    ssh.exec "sudo sed -i '/passenger.conf/s/#//g' /etc/nginx/nginx.conf"
-    ssh.exec "sudo service nginx restart"
     ssh.exec "sudo apt-get update"
     ssh.exec "sudo apt-get upgrade"
+    ssh.loop
+  end
+
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file ) do |ssh|
+    ssh.exec "sudo mkdir -p ~ubuntu/.ssh"
+    ssh.exec "touch $HOME/.ssh/authorized_keys"
+    ssh.exec "sudo sh -c 'cat $HOME/.ssh/authorized_keys >> ~ubuntu/.ssh/authorized_keys'"
+    ssh.exec "sudo sh -c 'chmod 600 ~ubuntu/.ssh/*'"
+    ssh.loop
+  end
+
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file) do |ssh|
+    ssh.exec "rvm use ruby-2.3.3"
+    ssh.exec "sudo apt-get install -y git"
+    ssh.exec "sudo mkdir -p /var/www/myapp"
+    ssh.loop
+  end
+
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file) do |ssh|
+    ssh.exec "sudo chown ubuntu: /var/www/myapp && cd /var/www/myapp && sudo -u ubuntu -H git clone https://github.com/NZenitram/spamgrid.git"
+    ssh.loop
+  end
+
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file) do |ssh|
+    ssh.exec "sudo gem install bundler"
+    ssh.loop
+  end
+
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file) do |ssh|
+    ssh.exec "sudo apt-get install -y ruby-dev"
+    ssh.loop
+  end
+
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file) do |ssh|
+    ssh.exec "sudo apt-get install -y libpq-dev"
+    ssh.loop
+  end
+
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file) do |ssh|
+    ssh.exec "sudo apt-get install -y postgresql"
+    ssh.exec "sudo -u postgres createuser --superuser ubuntu"
+    ssh.loop
+  end
+
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file) do |ssh|
+    ssh.exec "cd /var/www/myapp/spamgrid && sudo bundle install --deployment --without development test"
+    ssh.loop
+  end
+
+  Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file) do |ssh|
+    ssh.exec "cd /var/www/myapp/spamgrid && bundle exec rake assets:precompile"
     ssh.loop
   end
 

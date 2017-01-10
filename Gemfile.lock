@@ -252,7 +252,7 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jquery-rails
   launchy
-  listen (~> 3.0.5)
+  listen
   mail
   net-ssh
   nokogiri
