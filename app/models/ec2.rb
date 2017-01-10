@@ -105,7 +105,7 @@ class Ec2 < ApplicationRecord
   end
 
   Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file) do |ssh|
-    ssh.exec "rvm use ruby-2.3.3"
+    ssh.exec "rvm use ruby-2.0.0"
     ssh.exec "sudo apt-get install -y git"
     ssh.exec "sudo mkdir -p /var/www/myapp"
     ssh.loop
@@ -128,6 +128,7 @@ class Ec2 < ApplicationRecord
 
   Net::SSH.start(instance.public_dns_name, ssh_username, :keys => private_key_file) do |ssh|
     ssh.exec "sudo apt-get install -y libpq-dev"
+
     ssh.loop
   end
 
