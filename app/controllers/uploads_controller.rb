@@ -4,7 +4,7 @@ class UploadsController < ApplicationController
   end
 
   def show
-    @upload = current_user.uploads.find(params[:id])
+    # @upload = current_user.uploads.find(params[:id])
   end
 
   def create

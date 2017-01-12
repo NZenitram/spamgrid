@@ -83,4 +83,4 @@ production:
   database: regnet_production
   username: regnet
   host: localhost
-  password: <%= ENV['REGNET_DATABASE_PASSWORD'] %>
+  password: password
