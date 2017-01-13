@@ -7,7 +7,9 @@
       <h4> Your files must be uploaded in CSV format. </h4>
         <div class="form-group col-md-4">
             <%= form_tag "/spam" do  %>
-              <%= collection_select(:upload, :name, Upload.all, :name, :name) %>
+              <%= collection_select(:upload, :name, Upload.all, :url, :name) %></br>
+              <p> Select Column: </p>
+              <%= select_tag( :num, options_for_select((1..10).to_a)) %>
                 <div id="send-spam-link">
                 <%= submit_tag "Send Spam", class: "btn btn-primary" %>
               </div>

@@ -1,17 +1,16 @@
 source 'https://rubygems.org'
 
 gem "omniauth-google-oauth2", "~> 0.2.1"
-gem 'rb-readline'
 gem 'faraday'
 gem 'figaro'
 gem 'mail'
 gem 'sendgrid'
 gem 'aws-sdk', '< 2'
-gem 'nokogiri', '~> 1.6.8.rc2'
-gem 'turbolinks', '~> 5.0.0'
 gem 'net-ssh'
 gem 'listen'
 gem 'rb-readline'
+gem 'nokogiri', '~> 1.6.8.rc2'
+gem 'turbolinks', '~> 5.0.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 # Use postgresql as the database for Active Record

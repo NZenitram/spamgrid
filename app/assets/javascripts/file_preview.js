@@ -1,9 +1,21 @@
 $(document).ready(function() {
-  // $('#upload_name').on('select', function(){
 
+
+  $("#upload_name").change(function (){
     var url = $("#upload_name").find(":selected").val();
-    var img = $("<img />").attr('src', url).height(100).width(100);
+    $.get(url, function(data) {
+          var build = '<table border="1" cellpadding="2" cellspacing="0" style="border-collapse: collapse" width="100%">\n';
+          var rows = data.split("\n");
+          rows.forEach( function getvalues(thisRow) {
+        	build += "<tr>\n";
+        	var columns = thisRow.split(",");
+        	for(var i=0;i<columns.length;i++){ build += "<td>" + columns[i] + "</td>\n"; }
+        	build += "</tr>\n";
+        	})
+        	build += "</table>";
     $("#upload_name").find(":selected");
-      $("#files").append(img);
-  // });
+      $("#files").html('');
+      $("#files").append(build);
+    });
+  });
 });
