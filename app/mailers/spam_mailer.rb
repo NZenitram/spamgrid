@@ -1,7 +1,9 @@
 require 'csv'
 class SpamMailer < ApplicationMailer
 
-  def test_multi_send(file_name)
+  def test_multi_send(url, column)
+    file_name = url.split('/').last
+    head = column.to_i - 1
     s3 = AWS::S3.new
     obj = s3.buckets['spamgrid'].objects["#{file_name}"]
     File.open("tmp/#{file_name}", "wb") do |file|
@@ -11,7 +13,7 @@ class SpamMailer < ApplicationMailer
     end
     email = []
     CSV.foreach("tmp/#{file_name}", headers: true) do |row|
-      email << row[1]
+      email << row[head]
     end
       mail( :to => email,
             :from => 'spamgrid@gmail.com',

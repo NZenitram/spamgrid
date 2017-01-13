@@ -4,9 +4,11 @@ class ApplicationJob < ActiveJob::Base
   def create_csv
     file = Faker::Hipster.word
     CSV.open("tmp/#{file}.csv", "wb") do |csv|
-      csv << ["name", "email"]
+      csv << ["Name", "website", "Company", "Email"]
       10.times do |n|
-        csv << [Faker::Name.name, "#{n}@sink.sendgrid.net"]
+        csv << [Faker::Name.name,
+          Faker::Internet.url,
+          Faker::Company.profession, "#{n}@sink.sendgrid.net"]
       end
     end
   end
