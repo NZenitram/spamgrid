@@ -11,4 +11,7 @@ Rails.application.routes.draw do
   resources :uploads, only: [:index, :show, :create]
 
   root to: 'home#show'
+  ### AWS
+  get 'aws', to: 'aws#show'
+  post 'start_ec2', to: 'aws#start_ec2', as: 'instance_info'
 end

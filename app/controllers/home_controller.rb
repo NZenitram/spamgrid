@@ -1,7 +1,6 @@
 class HomeController < ApplicationController
 
   def show
-    # @uploads = current_user.uploads
   end
 
   def spam

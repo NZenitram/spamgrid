@@ -1,0 +1,10 @@
+<h2>EC2 Parameters</h2>
+<%= form_tag "/start_ec2" do  %>
+  <h4>Select your region:</h4>
+  <%= select_tag(:region, options_for_select(@regions.map {|obj| [obj.name]})) %>
+  <h4>Enter your KeyPair Name:</h4>
+  <%= text_field_tag 'key_pair_name' %>
+  <h4>Private Key File Directory // Example: (/.ssh/key_pair_name.pem)</h4>
+  <%= text_field_tag 'private_key_file'%>
+  <%= submit_tag "Fire it up!", class: "btn btn-primary" %>
+<% end %>
